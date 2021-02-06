@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+  <!-- Basic Page Needs
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <meta charset="utf-8">
+  <title>MTB Trail Report</title>
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+    
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js">
+    
+    
+</script>
+    
+<script type="text/javascript">
+    $(document).ready(function(){
+        var APPID = "0588e04d854133171cc03546789a7aa1";
+
+        $("#weathersubmit").click(function() {
+                                 
+            zipcode = $("#code").val();
+            console.log(zipcode);  
+            
+            
+                $.ajax({
+                url: "http://api.openweathermap.org/data/2.5/weather",type: "get",
+                data:{
+                   zip: zipcode, 
+                    APPID: APPID,
+                    units: "imperial" 
+                },
+                success: function(result){
+                    //$("#div1").html(result);
+                    console.log(result);
+                    var temp = "Current Temperture : <br><span class = 'textUp'>" + result.main.temp + "&#8457 </span>";
+                    
+                     var humid = "<br>Humidity : <br><span class = 'textUp'>" + result.main.humidity + "% </span>";
+                    var tempData = result.main.temp;
+                    var tempString = ""+tempData; 
+                    var tempNum = parseFloat(tempString);
+                    
+                    $(".weatherDisplay h4").fadeOut(function() {
+                        $(this).html(temp + humid);
+                    }).fadeIn(200);
+                   
+                   
+                    var today = new Date();
+                    var month = today.getMonth()+1;
+                    if(month < 11 && month > 3){
+                          $(".trailStatus h4").fadeOut(function() {
+                                $(this).html("<b>Likely Open");
+                          }).fadeIn(200);
+                        $(".trailStatus p").fadeOut(function() {
+                                $(this).html("Most trails are open this time of year, as long as its not flooded. Go out there and send it!");
+                          }).fadeIn(200);
+                        
+                        }
+                    else{
+                          $(".trailStatus h4").fadeOut(function() {
+                              $(this).html("<b>Likely Closed");
+                          }).fadeIn(200);
+                        $(".trailStatus p").fadeOut(function() {
+                                $(this).html("Most trails are closed this time of year, ask your local trail representative to see if you're allowed to shred.");
+                          }).fadeIn(200);
+                        
+                        }
+                   
+                  if(tempNum > 70){
+                          $(".gear p").fadeOut(function() {
+                                $(this).html("<span class = 'textUp'>Helmet: <br> </span> Something well ventilated and lightweight.<br><span class = 'textUp'>Clothes: <br> </span> T-shirt, shammy, and shorts. <br><span class = 'textUp'>Shoes and Socks: <br> </span> Light socks and low cut shoes");
+                          }).fadeIn(200);
+                        }  
+                  else if(tempNum > 45){
+                      $(".gear p").fadeOut(function() {
+                                $(this).html("<span class = 'textUp'>Helmet: <br> </span> Standard MTB helmet.<br><span class = 'textUp'>Clothes: <br> </span> T-shirt and light windbreaker, shammy, and shorts. <br><span class = 'textUp'>Shoes and Socks: <br> </span> High socks and low cut shoes.");
+                        }).fadeIn(200);
+                  }
+                    else if(tempNum > 20){
+                      $(".gear p").fadeOut(function() {
+                                $(this).html("<span class = 'textUp'>Helmet: <br> </span> A strong helmet with limited ventilation.<br><span class = 'textUp'>Clothes: <br> </span> Hoodie with layers or a heavy jacket, jeans or cycling pants. <br><span class = 'textUp'>Shoes and Socks: <br> </span> Wool socks and thick hightop shoes.");
+                        }).fadeIn(200);
+                  }
+                    else if(tempNum > -10){
+                    $(".gear p").fadeOut(function() {
+                                $(this).html("<span class = 'textUp'>Helmet: <br> </span> A limited ventilation or full face helmet, ski googles, ski mask.<br><span class = 'textUp'>Clothes: <br> </span> Heavy jacket with layers underneath. <br><span class = 'textUp'>Shoes and Socks: <br> </span> Two layers of wool socks, insulated shoes or boots.");
+                        }).fadeIn(200);
+                    }
+                    else{
+                    $(".gear p").fadeOut(function() {
+                                $(this).html("<span class = 'textUp'>Helmet: <br> </span> None, its dangerously cold outside so stay warm inside :)<br><span class = 'textUp'>Clothes: <br> </span> Your comfiest hoodie and pajama pants :) <br><span class = 'textUp'>Shoes and Socks: <br> </span> Some playful wool socks :)");
+                        }).fadeIn(200);
+                    }
+                },
+                error: function(result){
+                    alert(result);
+                }
+            });
+                                 
+        });
+        
+          
+      
+        console.log("is ready!");
+    });
+    
+    
+</script>
+  <!-- Mobile Specific Metas
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- FONT
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <link rel="stylesheet" type="text/css">
+
+  <!-- CSS
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <link rel="stylesheet" href="css/normalize.css">
+  <link rel="stylesheet" href="css/skeleton.css">
+
+  <!-- Favicon
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <link rel="icon" type="image/png" href="images/bikeicon.png">
+
+</head>
+ <style type='text/css'>
+     .weatherDisplay{}
+     background-image: url(images/warmforest.jpg);
+      
+     }
+  </style>
+<body>
+
+  <!-- Primary Page Layout
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <div class="container">
+    <div class="row">
+      <div class="two-third column" style="margin-top: 5%">
+        <h1>What's Your Trail Look like Today?</h1> <h2> Enter Your Zip Code Below to Find Out!</h2>
+          <input type="text" id="code" name="code" placeHolder = "00000"/>
+          <input type="submit" id="weathersubmit" name="weathersubmit" value="Submit Zip Code"/>
+       
+      </div>
+      </div>
+      <div class="row">
+        <div class = "twelve columns weatherDisplay">
+            <h3>WEATHER DATA:</h3>
+            <h4> </h4>
+        </div>
+    </div>
+      <div class="row">
+        <div class = "twelve columns trailStatus">
+            <h3> TRAIL STATUS:</h3>
+            <h4></h4>
+            <p></p>
+        </div>
+    </div>
+      <div class="row">
+        <div class = "twelve columns gear">
+            <h3> SUGGESTED GEAR:</h3>
+            <h4></h4>
+            <h3></h3>
+            <p></p>
+        </div>
+    </div>
+  </div>
+
+<!-- End Document
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+</body>
+</html>
